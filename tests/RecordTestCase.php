@@ -119,13 +119,16 @@ class Doctrine_Record_TestCase extends Doctrine_UnitTestCase
         $this->assertTrue($user->contains('id'));
     }
 
-    public function testInsertedRecordGetsAnIntegerAutoincrementId()
+    public function testInsertedRecordIdHasTheTypeItIsFetchedWith()
     {
         $user = new User();
         $user->name = 'Fresh User';
         $user->save();
+        $this->connection->clear();
 
-        $this->assertTrue(is_int($user->id));
+        $fetched = Doctrine_Core::getTable('User')->find($user->id);
+
+        $this->assertIdentical($fetched->id, $user->id);
     }
 
     public function testNotNullConstraint()

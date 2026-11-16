@@ -962,8 +962,8 @@ class Doctrine_Connection_UnitOfWork extends Doctrine_Connection_Module
                 }
     
                 $id = $this->conn->sequence->lastInsertId($seq);
-                // PDO reports the new id as a string, while integer columns fetch as ints from PHP 8.1
-                if (is_string($id) && (string) (int) $id === $id) {
+                // PHP 8.1 fetches integer columns as ints, but PDO still reports a new row's id as a string
+                if (PHP_VERSION_ID >= 80100 && is_string($id) && (string) (int) $id === $id) {
                     $id = (int) $id;
                 }
             } else {
