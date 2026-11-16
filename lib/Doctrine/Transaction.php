@@ -406,7 +406,9 @@ class Doctrine_Transaction extends Doctrine_Connection_Module
      */
     protected function _doRollback()
     {
-        $this->conn->getDbh()->rollback();
+        if ( ! $this->databaseHasEndedTransaction()) {
+            $this->conn->getDbh()->rollback();
+        }
     }
     
     /**
@@ -414,7 +416,21 @@ class Doctrine_Transaction extends Doctrine_Connection_Module
      */
     protected function _doCommit()
     {
-        $this->conn->getDbh()->commit();
+        if ( ! $this->databaseHasEndedTransaction()) {
+            $this->conn->getDbh()->commit();
+        }
+    }
+
+    /**
+     * MySQL implicitly commits on DDL, and PDO then throws on a commit or rollback that has nothing open.
+     *
+     * @return boolean
+     */
+    private function databaseHasEndedTransaction()
+    {
+        $dbh = $this->conn->getDbh();
+
+        return $dbh instanceof PDO && ! $dbh->inTransaction();
     }
     
     /**

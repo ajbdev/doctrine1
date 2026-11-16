@@ -235,6 +235,26 @@ class Doctrine_Connection_TestCase extends Doctrine_UnitTestCase
         $this->assertEqual($this->connection->transaction->getTransactionLevel(),0);
     }
 
+    public function testCommitWhenTheDatabaseHasAlreadyEndedTheTransaction()
+    {
+        $this->connection->beginTransaction();
+        $this->connection->getDbh()->commit();
+
+        $this->connection->commit();
+
+        $this->assertEqual($this->connection->transaction->getTransactionLevel(),0);
+    }
+
+    public function testRollbackWhenTheDatabaseHasAlreadyEndedTheTransaction()
+    {
+        $this->connection->beginTransaction();
+        $this->connection->getDbh()->commit();
+
+        $this->connection->rollback();
+
+        $this->assertEqual($this->connection->transaction->getTransactionLevel(),0);
+    }
+
     public function testSqliteDsn()
     {
         $conn = Doctrine_Manager::connection('sqlite:foo.sq3');
