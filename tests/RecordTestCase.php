@@ -119,6 +119,15 @@ class Doctrine_Record_TestCase extends Doctrine_UnitTestCase
         $this->assertTrue($user->contains('id'));
     }
 
+    public function testInsertedRecordGetsAnIntegerAutoincrementId()
+    {
+        $user = new User();
+        $user->name = 'Fresh User';
+        $user->save();
+
+        $this->assertTrue(is_int($user->id));
+    }
+
     public function testNotNullConstraint()
     {
         $null = new NotNullTest();
