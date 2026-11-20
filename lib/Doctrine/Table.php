@@ -2040,7 +2040,7 @@ class Doctrine_Table extends Doctrine_Configurable implements Countable
      * @param Doctrine_Record $record   record to consider; if it does not exists, it is created
      * @return Doctrine_Validator_ErrorStack $errorStack
      */
-    public function validateField($fieldName, $value, Doctrine_Record $record = null)
+    public function validateField($fieldName, $value, ?Doctrine_Record $record = null)
     {
         if ($record instanceof Doctrine_Record) {
             $errorStack = $record->getErrorStack();
@@ -2191,7 +2191,7 @@ class Doctrine_Table extends Doctrine_Configurable implements Countable
      *
      * @return array numeric array
      */
-    public function getColumnNames(array $fieldNames = null)
+    public function getColumnNames(?array $fieldNames = null)
     {
         if ($fieldNames === null) {
             return array_keys($this->_columns);

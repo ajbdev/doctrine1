@@ -311,8 +311,8 @@ abstract class Doctrine_Query_Abstract
      * @param Doctrine_Connection  The connection object the query will use.
      * @param Doctrine_Hydrator_Abstract  The hydrator that will be used for generating result sets.
      */
-    public function __construct(Doctrine_Connection $connection = null,
-            Doctrine_Hydrator_Abstract $hydrator = null)
+    public function __construct(?Doctrine_Connection $connection = null,
+            ?Doctrine_Hydrator_Abstract $hydrator = null)
     {
         if ($connection === null) {
             $connection = Doctrine_Manager::getInstance()->getCurrentConnection();
@@ -627,7 +627,7 @@ abstract class Doctrine_Query_Abstract
      * @param int $index
      * @return array
      */
-    protected function _adjustProcessedParam(array $params = null, $index)
+    protected function _adjustProcessedParam(?array $params, $index)
     {
         // Retrieve all params
         $params = null !== $params ? $params : $this->getInternalParams();

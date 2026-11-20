@@ -935,7 +935,7 @@ class Doctrine_Collection extends Doctrine_Access implements Countable, Iterator
      * @param Doctrine_Connection $conn     optional connection parameter
      * @return Doctrine_Collection
      */
-    public function save(Doctrine_Connection $conn = null, $processDiff = true)
+    public function save(?Doctrine_Connection $conn = null, $processDiff = true)
     {
         if ($conn == null) {
             $conn = $this->_table->getConnection();
@@ -970,7 +970,7 @@ class Doctrine_Collection extends Doctrine_Access implements Countable, Iterator
      * @param Doctrine_Connection $conn     optional connection parameter
      * @return Doctrine_Collection
      */
-    public function replace(Doctrine_Connection $conn = null, $processDiff = true)
+    public function replace(?Doctrine_Connection $conn = null, $processDiff = true)
     {
         if ($conn == null) {
             $conn = $this->_table->getConnection();
@@ -1003,7 +1003,7 @@ class Doctrine_Collection extends Doctrine_Access implements Countable, Iterator
      *
      * @return Doctrine_Collection
      */
-    public function delete(Doctrine_Connection $conn = null, $clearColl = true)
+    public function delete(?Doctrine_Connection $conn = null, $clearColl = true)
     {
         if ($conn == null) {
             $conn = $this->_table->getConnection();

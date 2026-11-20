@@ -1,7 +1,7 @@
 {
     "name": "ovos/doctrine1",
     "type": "library",
-    "description": "Doctrine v1, Database ORM, PHP 5.3-8.2 compatible",
+    "description": "Doctrine v1, Database ORM, PHP 7.1-8.5 compatible",
     "keywords": [
         "php",
         "doctrine1",
@@ -18,7 +18,7 @@
         "doctrine/doctrine1": "*"
     },
     "require": {
-        "php": ">=5.3.3",
+        "php": ">=7.1",
         "ext-pdo": "*"
     },
     "autoload": {
