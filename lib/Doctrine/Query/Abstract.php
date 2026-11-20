@@ -2458,7 +2458,7 @@ abstract class Doctrine_Query_Abstract
             return $this;
         }
 
-        $this->_dependences[$sqlPart][$tableAlias] = true;
+        $this->_dependences[$sqlPart][$tableAlias ?? ''] = true;
         return $this;
     }
 

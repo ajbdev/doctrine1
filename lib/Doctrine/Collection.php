@@ -381,7 +381,7 @@ class Doctrine_Collection extends Doctrine_Access implements Countable, Iterator
      */
     public function get($key)
     {
-        if ( ! isset($this->data[$key])) {
+        if ( ! isset($this->data[$key ?? ''])) {
             $record = $this->_table->create();
 
             if (isset($this->referenceField)) {
@@ -406,7 +406,7 @@ class Doctrine_Collection extends Doctrine_Access implements Countable, Iterator
             return $record;
         }
 
-        return $this->data[$key];
+        return $this->data[$key ?? ''];
     }
 
     /**
