@@ -68,10 +68,7 @@ class Doctrine_Connection_Sqlite extends Doctrine_Connection_Common
          parent::__construct($manager, $adapter);
 
         if ($this->isConnected) {
-            $this->dbh->sqliteCreateFunction('mod',    array('Doctrine_Expression_Sqlite', 'modImpl'), 2);
-            $this->dbh->sqliteCreateFunction('concat', array('Doctrine_Expression_Sqlite', 'concatImpl'));
-            $this->dbh->sqliteCreateFunction('md5', 'md5', 1);
-            $this->dbh->sqliteCreateFunction('now', array('Doctrine_Expression_Sqlite', 'nowImpl'), 0);
+            $this->registerFunctions();
         }
     }
 
@@ -89,10 +86,38 @@ class Doctrine_Connection_Sqlite extends Doctrine_Connection_Common
 
         parent::connect();
 
-        $this->dbh->sqliteCreateFunction('mod',    array('Doctrine_Expression_Sqlite', 'modImpl'), 2);
-        $this->dbh->sqliteCreateFunction('concat', array('Doctrine_Expression_Sqlite', 'concatImpl'));
-        $this->dbh->sqliteCreateFunction('md5', 'md5', 1);
-        $this->dbh->sqliteCreateFunction('now', array('Doctrine_Expression_Sqlite', 'nowImpl'), 0);
+        $this->registerFunctions();
+    }
+
+    protected function createPdo($dsn, $username, $password, $options)
+    {
+        if (class_exists('Pdo\\Sqlite')) {
+            return new \Pdo\Sqlite($dsn, $username, $password, $options);
+        }
+
+        return parent::createPdo($dsn, $username, $password, $options);
+    }
+
+    /**
+     * @return void
+     */
+    private function registerFunctions()
+    {
+        $functions = array(
+            array('mod', array('Doctrine_Expression_Sqlite', 'modImpl'), 2),
+            array('concat', array('Doctrine_Expression_Sqlite', 'concatImpl'), -1),
+            array('md5', 'md5', 1),
+            array('now', array('Doctrine_Expression_Sqlite', 'nowImpl'), 0),
+        );
+
+        foreach ($functions as $function) {
+            list($name, $callback, $numArgs) = $function;
+            if ($this->dbh instanceof \Pdo\Sqlite) {
+                $this->dbh->createFunction($name, $callback, $numArgs);
+            } else {
+                $this->dbh->sqliteCreateFunction($name, $callback, $numArgs);
+            }
+        }
     }
 
     /**

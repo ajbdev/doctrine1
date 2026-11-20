@@ -445,6 +445,18 @@ abstract class Doctrine_Connection extends Doctrine_Configurable implements Coun
     }
 
     /**
+     * @param string $dsn
+     * @param string $username
+     * @param string $password
+     * @param array $options
+     * @return PDO
+     */
+    protected function createPdo($dsn, $username, $password, $options)
+    {
+        return new PDO($dsn, $username, $password, $options);
+    }
+
+    /**
      * connect
      * connects into database
      *
@@ -466,7 +478,7 @@ abstract class Doctrine_Connection extends Doctrine_Configurable implements Coun
         if (extension_loaded('pdo')) {
             if (in_array($e[0], self::getAvailableDrivers())) {
                 try {
-                    $this->dbh = new PDO($this->options['dsn'], $this->options['username'],
+                    $this->dbh = $this->createPdo($this->options['dsn'], $this->options['username'],
                                      (!$this->options['password'] ? '':$this->options['password']), $this->options['other']);
 
                     $this->dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
